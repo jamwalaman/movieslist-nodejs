@@ -1,0 +1,15 @@
+extends layout
+block content
+
+	h1 Directors associated with your movies list
+
+	ul
+		each director in director_list
+			li
+				a(href=director.url) #{director.name}
+				if director.date_of_birth
+					|  (#{director.lifespan})
+
+		else
+			p There are no directors. 
+				a(href='/catalog/director/create') Click here to create a new director

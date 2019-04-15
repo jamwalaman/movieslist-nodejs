@@ -1,0 +1,10 @@
+extends layout
+
+block content
+	h1 Welcome to Movies Watchlist
+	p.lead A simple web app created with Nodejs
+
+	if error
+		p Error getting dynamic content
+	else
+		p Number of movies in your watchlist: !{data.movie_count}

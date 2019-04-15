@@ -1,0 +1,57 @@
+extends layout
+block content
+
+	h1= title
+
+	hr
+
+	div.row
+		div.col-md-8
+
+			form(method='POST', action='')
+				div.form-group
+					label(for='first_name') First Name
+					input(
+						type='text'
+						name='first_name'
+						id='first_name'
+						class='form-control'
+						placeholder='Enter first name'
+						value=(undefined===director ? '' : director.first_name)
+					)
+				div.form-group
+					label(for='family_name') Last Name
+					input(
+						type='text'
+						name='family_name'
+						id='family_name'
+						class='form-control'
+						placeholder='Enter last name'
+						value=(undefined===director ? '' : director.family_name)
+					)
+				div.form-group
+					label(for='date_of_birth') Date of birth (optional)
+					//- Using momentjs to set the max attribute to today's date, so user can't enter date that's in the future
+					//- If for some reason this fails, there is more validation on director_detail page
+					input(
+						type='date'
+						name='date_of_birth'
+						class='form-control'
+						max=moment().format('YYYY-MM-DD')
+						value=(undefined===director ? '' : director.date_of_birth_for_form)
+					)
+				div.form-group
+					label(for='date_of_death') Date of death (optional)
+					input(
+						type='date'
+						name='date_of_death'
+						class='form-control'
+						max=moment().format('YYYY-MM-DD')
+						value=(undefined===director ? '' : director.date_of_death_for_form)
+					)
+				button.btn.btn-primary(type='submit') Submit
+
+			if errors
+				ul
+					for error in errors
+						li!= error.msg

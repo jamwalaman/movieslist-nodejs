@@ -1,0 +1,64 @@
+extends layout
+block content
+
+	h1= title
+
+	if currentUrl==='/catalog/movie/create'
+		h4 Add a movie to your watchlist
+
+	hr
+
+	div.row
+		div.col-md-8
+		
+			form(method='POST', action='')
+
+				div.form-group
+					label(for='title') Title
+					input(
+						type='text'
+						name='title'
+						id='title'
+						class='form-control'
+						placeholder='Enter movie title'
+						value=(undefined===movie ? '' : movie.title)
+					)
+
+				div.form-group
+					label(for=director) Director:
+					select#director.form-control(type='select', placeholder='Select director', name='director')
+						for director in directors
+							if movie
+								option(
+									value=director._id
+									selected=(director._id.toString()==movie.director._id.toString() ? 'selected' :false)
+									) #{director.name}
+							else
+								option(value=director._id) #{director.name}
+				
+				div.form-group
+					label(for='plot') Plot synopsis
+					textarea(
+						name='plot'
+						id=plot
+						class='form-control'
+						rows='3'
+						placeholder='Enter plot synopsis for the movie'
+					)= undefined===movie ? '' : movie.plot_synop
+				
+				div.form-group
+					label(for=release_date) Movie release date
+					input(
+						type='date'
+						name='release_date'
+						class='form-control'
+						value=(undefined===movie ? '' : movie.release_date_for_form)
+					)
+				button.btn.btn-primary(type='submit') Submit
+				if movie
+					a.btn.btn-secondary.ml-3(href=movie.url, role='button' aria-pressed='true') Go back
+
+	if errors
+		ul
+			for error in errors
+				li!= error.msg

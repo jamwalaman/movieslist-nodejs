@@ -1,0 +1,13 @@
+extends layout
+block content
+
+	h1= title
+	p Do you really want to delete #[strong #{movie.title}]?
+
+	div.row
+		div.col-md-8
+			form(method='POST', action='')
+				div.form-group
+					input#id.form-control(type='hidden',name='id', required='true', value=movie._id )
+				button.btn.btn-primary(type='submit') Delete
+				a.btn.btn-secondary.ml-3(href=movie.url, role='button' aria-pressed='true') Go back
