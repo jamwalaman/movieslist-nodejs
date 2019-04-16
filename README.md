@@ -6,5 +6,5 @@ You need a MongoDB Atlas account for the database. [Click here](https://develope
 Copy your mongodb url, go to the app.js file and paste it on [line 16](https://github.com/jamwalaman/movieslist-nodejs/blob/master/app.js#L16)
 
 Open the terminal window, go to the project folder and do the following:
-* Type 'node db_content <your mongodb url>' (adds some content to the database)
+* Type 'node db_content \<your mongodb url\>' (adds some content to the database)
 * Type 'npm install' to install all the dependencies. And then type 'npm run start'. Open a browser and type localhost:3000 
