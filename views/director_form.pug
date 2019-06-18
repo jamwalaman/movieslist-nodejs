@@ -31,14 +31,11 @@ block content
 					)
 				div.form-group
 					label(for='date_of_birth') Date of birth (optional)
-					//- Using momentjs to set the max attribute to today's date, so user can't enter date that's in the future
-					//- If for some reason this fails, there is more validation on director_detail page
 					input(
 						type='date'
 						name='date_of_birth'
 						class='form-control'
-						max=moment().format('YYYY-MM-DD')
-						value=(undefined===director ? '' : director.date_of_birth_for_form)
+						value=(undefined===director ? '' : moment(director.date_of_birth).format('YYYY-MM-DD'))
 					)
 				div.form-group
 					label(for='date_of_death') Date of death (optional)
@@ -46,8 +43,8 @@ block content
 						type='date'
 						name='date_of_death'
 						class='form-control'
-						max=moment().format('YYYY-MM-DD')
-						value=(undefined===director ? '' : director.date_of_death_for_form)
+						
+						value=(undefined===director ? '' : moment(director.date_of_death).format('YYYY-MM-DD'))
 					)
 				button.btn.btn-primary(type='submit') Submit
 

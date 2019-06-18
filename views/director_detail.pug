@@ -2,19 +2,9 @@ extends layout
 block content
 
 	h1 Director: #{director.name}
-	//- p #{movies_count}
-
-	//- Make sure that date of birth is later than the date of death
-	//- This really should be validated when user is adding or updating
-	if director.age < 0
-		p Date of birth should be later than the date of death
-
-	//- No date of birth provided
-	if !director.date_of_birth && director.date_of_death
-		p Please enter date of birth
 
 	//- No date of death provided
-	else if director.date_of_birth && !director.date_of_death
+	if director.date_of_birth && !director.date_of_death
 		-var bday = 'Born: ' + director.lifespan.replace('-', '') + '(aged ' + director.age
 		//- check if today's date matches the director's date of birth
 		if moment().format('Do MMMM') === moment(director.date_of_birth).format('Do MMMM')
@@ -27,9 +17,6 @@ block content
 	else if director.date_of_birth && director.date_of_death
 		p.lead #{director.lifespan} (died aged #{director.age})
 
-	//- No date of birth and date of death provided
-	else
-		p= ''
 
 	//- Say 'movie' if movie_count is 1, else say 'movies'
 	if movies_count === 1

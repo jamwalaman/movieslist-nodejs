@@ -38,32 +38,22 @@ DirectorSchema
 DirectorSchema
 .virtual('age')
 .get(function() {
+
 	var age;
+	var dob = moment(this.date_of_birth);
 
-	var dob_year = moment(this.date_of_birth).format('YYYY');
-	var dob_month = moment(this.date_of_birth).format('M') - 1;
-	var dob_day = moment(this.date_of_birth).format('D');
-	var dob = moment([dob_year, dob_month, dob_day]);
-
-	if(!this.date_of_death) {
+	if(this.date_of_birth && !this.date_of_death) {
 		// only date of birth is provided
-		var current_year = moment().format('YYYY');
-		var current_month = moment().format('M') - 1;
-		var current_day = moment().format('D');
-		
-		var today = moment([current_year, current_month, current_day]);
+		var today = moment();
 		age = today.diff(dob, 'years');
-	} else {
-		// both date of birth and date of death is provided
-		var died_year = moment(this.date_of_death).format('YYYY');
-		var died_month = moment(this.date_of_death).format('M') - 1;
-		var died_day = moment(this.date_of_death).format('D');
-		var died = moment([died_year, died_month, died_day]);
-		
+	} else if (this.date_of_birth && this.date_of_death) {
+		// both date of birth and date of death are provided
+		var died = moment(this.date_of_death);
 		age = died.diff(dob, 'years');
 	}
 
 	return age;
+
 })
 
 

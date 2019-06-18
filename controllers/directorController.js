@@ -8,7 +8,7 @@ const {sanitizeBody} = require('express-validator/filter');
 
 // Display list of all Directors.
 exports.director_list = function(req, res, next) {
-	
+
 	Director.find()
 	.sort([ ['first_name', 'ascending'] ]) // sort by first name, ascending order
 	.exec(function(err, directors_list_from_db) {
@@ -16,7 +16,7 @@ exports.director_list = function(req, res, next) {
 			// succesful, so render
 			res.render('director_list', {title: 'Director List', director_list: directors_list_from_db, currentUrl: req.originalUrl});
 		})
-	
+
 };
 
 // Display detail page for a specific Director.
@@ -65,8 +65,16 @@ exports.director_create_post = [
 // Validate fields.
 body('first_name').isLength({min:1}).trim().withMessage('First name is required'),
 body('family_name').isLength({min:1}).trim().withMessage('Family name is required'),
-body('date_of_birth', 'Invalid date of birth').optional({ checkFalsy: true }).isISO8601(),
-body('date_of_death', 'Invalid date of death').optional({ checkFalsy: true }).isISO8601(),
+body('date_of_birth', 'Invalid date of birth').optional({ checkFalsy: true }).isISO8601()
+	.isBefore().withMessage("Date of birth can't be in the future"),
+body('date_of_death', 'Invalid date of death').optional({ checkFalsy: true }).isISO8601().custom( (value, {req}) => {
+	// Error if date_of_death is earlier than date_of_birth of date_of_birth is not provided
+	if (value < req.body.date_of_birth || !req.body.date_of_birth) {
+		throw new Error("Date of death must be later than date of birth");
+	} else {
+		return value;
+	}
+}),
 
 // Sanitize fields.
 sanitizeBody('first_name').escape(),
@@ -97,7 +105,7 @@ sanitizeBody('date_of_death').toDate(),
 			res.redirect(director.url);
 		});
 	}
-	
+
 }
 
 ];
@@ -158,7 +166,7 @@ exports.director_delete_post = function(req, res, next) {
 
 // Display Director update form on GET.
 exports.director_update_get = function(req, res, next) {
-	
+
 	Director.findById(req.params.id, function(err, director) {
 		if(err){return next(err);}
 		if(director==null) {
